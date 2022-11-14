@@ -1,24 +1,19 @@
-# Frobnicator (this is a template)
+# na pewno bot for Twitter
 
 ## Authors
-- Andrzej Głuszak (@agluszak on GitHub)
-- Linus Torvalds (@torvalds on GitHub)
+- Michał Skwarek (@mskwr on GitHub)
 
 ## Description
-Frobnicator is going to be a platformer game similar to Super Mario Bros made using Bevy game engine.
+Annual surveys show that the most popular orthographic error among Poles online for 2020, 2021 and 2022 is the phrase "na pewno" (which means "certainly"), incorrectly spelled as "napewno". On Twitter, this mistake is made by more than 1,000 people every day. The job of the na pewno bot for Twitter is to improve these stats.
 
 ## Features
-- map generator
-- shooting
-- enemy AI
-- game state saving and loading
-- scores
+- finding all tweets containing "napewno"
+- correcting orthography by automatically replying to these tweets
+- maintaining statistics, including how many people per day made the mistake
+- providing daily reports on the profile, comparing the results with the previous day
 
 ## Plan
-In the first part we're going to implement the basics: movement, physics and shooting. The enemies will simply bounce from one edge of the platform to the other. There will be only a single map.
-
-In the second part we're going to add random map generator, saving/loading, scores and a more sophisticated AI.
+In the first part I am going to implement the basics: a bot that will find "napewno" errors and respond to them in the identical, same way. In the second part I am going to add varied answers, keeping statistics, daily posting of reports.
 
 ## Libraries
-- Bevy
-- Serde (for serialization)
+- twitter-v2 (official Rust bindings for Twitter API v2)
