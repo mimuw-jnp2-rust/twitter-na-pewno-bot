@@ -16,4 +16,4 @@ Annual surveys show that the most popular orthographic error among Poles online 
 In the first part I am going to implement the basics: a bot that will find "napewno" errors and respond to them in the identical, same way. In the second part I am going to add varied answers, keeping statistics, daily posting of reports.
 
 ## Libraries
-- twitter-v2 (official Rust bindings for Twitter API v2)
+- egg-mode
