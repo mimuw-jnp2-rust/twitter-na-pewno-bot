@@ -1,4 +1,6 @@
 # na pewno bot for Twitter
+[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/napewnobot.svg?style=social&label=Follow%20%40napewnobot)](https://twitter.com/napewnobot)
+
 
 ## Authors
 - Michał Skwarek (@mskwr on GitHub)
@@ -15,6 +17,10 @@ Annual surveys show that the most popular orthographic error among Poles online 
 ## Plan
 In the first part I am going to implement the basics: a bot that will find "napewno" errors and respond to them in the identical, same way. In the second part I am going to add varied answers, keeping statistics, daily posting of reports.
 
+## Usage
+Standard usage. Remember to set enviroment variables for correct authorization.
+
 ## Libraries
 - tokio
+- time
 - twitter-v2 (official Rust bindings for Twitter API v2)
