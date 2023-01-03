@@ -1,0 +1,15 @@
+[package]
+name = "project-na-pewno-twitter-bot"
+version = "0.1.0"
+authors = ["mskwr <michal.skwarek@pm.me>"]
+description = "A bot drawing the attention of Poles to the most common spelling mistake they make."
+license = "MIT"
+homepage = "https://github.com/mimuw-jnp2-rust/project-na-pewno-twitter-bot.git"
+repository = "https://github.com/mimuw-jnp2-rust/project-na-pewno-twitter-bot.git"
+readme = "README.md"
+keywords = ["twitter", "bot", "rust", "na-pewno"]
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.23.0", features = ["full"] }
+twitter-v2 = "0.1.8"
