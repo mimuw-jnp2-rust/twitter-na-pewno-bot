@@ -1,9 +1,9 @@
 # na pewno bot for Twitter
-[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/napewnobot.svg?style=social&label=Follow%20%40napewnobot)](https://twitter.com/napewnobot)
+[![Twitter URL](https://i.imgur.com/7P6IaZw.jpg)](https://twitter.com/napewnobot)
 
 
 ## Authors
-- Michał Skwarek (@mskwr on GitHub)
+- Michał Skwarek ([@mskwr](https://github.com/mskwr))
 
 ## Description
 Annual surveys show that the most popular orthographic error among Poles online for 2020, 2021 and 2022 is the phrase "na pewno" (which means "certainly"), incorrectly spelled as "napewno". On Twitter, this mistake is made by more than 1,000 people every day. The job of the na pewno bot for Twitter is to improve these stats.
@@ -23,4 +23,4 @@ Standard usage. Remember to set enviroment variables for correct authorization.
 ## Libraries
 - tokio
 - time
-- twitter-v2 (official Rust bindings for Twitter API v2)
+- twitter-v2
