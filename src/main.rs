@@ -1,7 +1,7 @@
 mod auth;
 mod requests;
 
-use auth::get_api_user_ctx;
+use auth::get_api_user_context;
 use std::thread::sleep;
 use std::time::Duration;
 use time::OffsetDateTime;
@@ -11,14 +11,15 @@ const MINIMUM_PRIOR_SECS: u64 = 10;
 const REQUEST_TIMEOUT_SECS: u64 = 300;
 const SINCE_LAST_MILLIS: u64 = 1;
 const KEYWORD: &str = "napewno";
-const MSG: &str = "Witam. Proszę wybaczyć moją śmiałość, ale 'na pewno' piszemy rozdzielnie.";
+const REPLY_MSG: &str = "Proszę wybaczyć moją śmiałość, ale 'na pewno' \
+                         piszemy rozdzielnie. 👀";
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    // Loading environment variables from .env file.
-    dotenv::dotenv().expect(".env file not readable");
+    // Loads environment variables from .env file.
+    dotenv::dotenv().expect(".env file should be readable");
 
-    let api = get_api_user_ctx();
+    let api = get_api_user_context();
 
     // All time variables are in UTC.
     let mut cur_time = OffsetDateTime::now_utc();
@@ -35,7 +36,7 @@ async fn main() -> Result<(), Error> {
         if tweets != None {
             for tweet in tweets.unwrap() {
                 api.post_tweet()
-                    .text(MSG.parse().unwrap())
+                    .text(REPLY_MSG.parse().unwrap())
                     .in_reply_to_tweet_id(tweet.id)
                     .send()
                     .await?;
