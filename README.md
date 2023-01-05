@@ -1,4 +1,4 @@
-# na pewno bot for Twitter
+# na pewno bot for Twitter ([@napewnobot](https://twitter.com/napewnobot))
 [![Twitter URL](https://i.imgur.com/7P6IaZw.jpg)](https://twitter.com/napewnobot)
 
 ## Authors
