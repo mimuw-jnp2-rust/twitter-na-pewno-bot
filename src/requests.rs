@@ -95,7 +95,7 @@ pub async fn count_tweets_with_keyword(keyword: &str, date: &Date) -> usize {
             .max_results(MAXIMUM_NUMBER_OF_RESULTS)
             .send()
             .await
-            .expect("query error")
+            .expect("invalid query")
             .into_data();
 
         match tweets.as_ref() {
