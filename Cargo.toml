@@ -13,4 +13,5 @@ edition = "2021"
 [dependencies]
 tokio = { version = "1.23.0", features = ["full"] }
 time = "0.3.17"
+dotenv = "0.15.0"
 twitter-v2 = "0.1.8"

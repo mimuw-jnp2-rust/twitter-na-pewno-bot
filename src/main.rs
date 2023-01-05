@@ -1,4 +1,5 @@
 mod auth;
+mod requests;
 
 use auth::get_api_user_ctx;
 use std::thread::sleep;
@@ -7,19 +8,17 @@ use time::OffsetDateTime;
 use twitter_v2::Error;
 
 const MINIMUM_PRIOR_SECS: u64 = 10;
-const REQUEST_TIMEOUT_SECS: u64 = 300;
+const REQUEST_TIMEOUT_SECS: u64 = 60;
 const SINCE_LAST_MILLIS: u64 = 1;
 const KEYWORD: &str = "napewno";
 const MSG: &str = "Witam. Proszę wybaczyć moją śmiałość, ale 'na pewno' piszemy rozdzielnie.";
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    println!("Authorizing with Twitter API...");
+    // Loading environment variables from .env file.
+    dotenv::dotenv().expect(".env file not readable");
 
-    // Getting Twitter Api from user context.
     let api = get_api_user_ctx();
-
-    println!("Authorized. The bot has been launched.");
 
     // All time variables are in UTC.
     let mut cur_time = OffsetDateTime::now_utc();
@@ -40,8 +39,6 @@ async fn main() -> Result<(), Error> {
                     .in_reply_to_tweet_id(tweet.id)
                     .send()
                     .await?;
-
-                println!("I replied to the tweet: {}", tweet.text);
             }
         }
 
