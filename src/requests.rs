@@ -1,6 +1,8 @@
+use time::OffsetDateTime;
 use twitter_v2::authorization::Oauth1aToken;
 use twitter_v2::id::NumericId;
-use twitter_v2::query::TweetField::InReplyToUserId;
+use twitter_v2::query::Exclude::Replies;
+use twitter_v2::query::TweetField::{CreatedAt, InReplyToUserId};
 use twitter_v2::TwitterApi;
 
 const MINIMUM_NUMBER_OF_RESULTS: usize = 5;
@@ -23,7 +25,7 @@ pub async fn get_my_user_id(api: &TwitterApi<Oauth1aToken>) -> Option<NumericId>
 
 // Getting id of the latest reply of given user.
 #[allow(dead_code)]
-pub async fn get_last_user_reply_id(
+pub async fn get_user_latest_reply_id(
     user_id: NumericId,
     api: &TwitterApi<Oauth1aToken>,
 ) -> Option<NumericId> {
@@ -46,5 +48,27 @@ pub async fn get_last_user_reply_id(
             }
             return None;
         }
+    }
+}
+
+// Getting date of the latest tweet of given user.
+#[allow(dead_code)]
+pub async fn get_user_latest_tweet_date(
+    user_id: NumericId,
+    api: &TwitterApi<Oauth1aToken>,
+) -> Option<OffsetDateTime> {
+    let my_tweets = api
+        .get_user_tweets(user_id)
+        .tweet_fields([CreatedAt])
+        .exclude([Replies])
+        .max_results(MINIMUM_NUMBER_OF_RESULTS)
+        .send()
+        .await
+        .expect("user not found")
+        .into_data();
+
+    match my_tweets {
+        None => None,
+        Some(tweets) => tweets[0].created_at,
     }
 }

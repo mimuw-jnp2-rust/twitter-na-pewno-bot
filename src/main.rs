@@ -8,7 +8,7 @@ use time::OffsetDateTime;
 use twitter_v2::Error;
 
 const MINIMUM_PRIOR_SECS: u64 = 10;
-const REQUEST_TIMEOUT_SECS: u64 = 60;
+const REQUEST_TIMEOUT_SECS: u64 = 300;
 const SINCE_LAST_MILLIS: u64 = 1;
 const KEYWORD: &str = "napewno";
 const MSG: &str = "Witam. Proszę wybaczyć moją śmiałość, ale 'na pewno' piszemy rozdzielnie.";
