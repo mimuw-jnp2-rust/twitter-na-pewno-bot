@@ -1,5 +1,5 @@
 # na pewno bot for Twitter ([@napewnobot](https://twitter.com/napewnobot))
-[![Twitter URL](https://i.imgur.com/VHOYXx5.png)](https://twitter.com/napewnobot)
+[![Twitter URL](https://i.imgur.com/vZvHdbN.png)](https://twitter.com/napewnobot)
 
 ## Authors
 - Michał Skwarek ([@mskwr](https://github.com/mskwr))
