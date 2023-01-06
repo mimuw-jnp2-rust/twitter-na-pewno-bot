@@ -1,17 +1,17 @@
 [package]
-name = "project-na-pewno-twitter-bot"
+name = "na-pewno-bot"
 version = "0.1.0"
-authors = ["mskwr <michal.skwarek@pm.me>"]
-description = "A bot drawing the attention of Poles to the most common spelling mistake they make."
+edition = "2021"
 license = "MIT"
+readme = "README.md"
+authors = ["mskwr <michal.skwarek@pm.me>"]
 homepage = "https://github.com/mimuw-jnp2-rust/project-na-pewno-twitter-bot.git"
 repository = "https://github.com/mimuw-jnp2-rust/project-na-pewno-twitter-bot.git"
-readme = "README.md"
+description = "A bot drawing the attention of Poles to the most common spelling mistake they make."
 keywords = ["twitter", "bot", "rust", "na-pewno"]
-edition = "2021"
 
 [dependencies]
-tokio = { version = "1.23.0", features = ["full"] }
+tokio = { version = "1.23.0", features = ["macros"] }
 time = "0.3.17"
-dotenv = "0.15.0"
 twitter-v2 = "0.1.8"
+dotenv = "0.15.0"
