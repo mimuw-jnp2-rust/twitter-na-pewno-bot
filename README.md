@@ -17,8 +17,8 @@ The bot provides the following features:
 1. Sign up for the Twitter API to get the keys and tokens necessary for authorization. Set them as an environment variables.
 2. Clone the repository.
    ```sh
-   git clone https://github.com/mimuw-jnp2-rust/project-na-pewno-twitter-bot.git
-   cd project-na-pewno-twitter-bot
+   git clone https://github.com/mimuw-jnp2-rust/twitter-na-pewno-bot.git
+   cd twitter-na-pewno-bot
    ```
 3. Build the project.
    ```sh
