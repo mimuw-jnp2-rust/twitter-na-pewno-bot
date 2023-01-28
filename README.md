@@ -30,7 +30,7 @@ The bot provides the following features:
    ```
 
 ## License
-Distributed under the MIT License. <!-- See `LICENSE.txt` for more information. -->
+Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## Libraries
 - [twitter_v2](https://docs.rs/twitter-v2/latest/twitter_v2/)
