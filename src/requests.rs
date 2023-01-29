@@ -19,7 +19,7 @@ pub async fn get_my_user_id() -> Option<NumericId> {
         .expect("invalid user")
         .into_data();
 
-    me.map(|me| me.id)
+    me.map(|user| user.id)
 }
 
 // Gets id of the latest reply of given user.
@@ -33,9 +33,10 @@ pub async fn get_latest_reply_id(user: NumericId) -> Option<NumericId> {
         .send()
         .await
         .expect("invalid user")
-        .into_data();
+        .into_data()
+        .unwrap_or(Vec::new());
 
-    my_tweets?
+    my_tweets
         .iter()
         .find(|tweet| tweet.in_reply_to_user_id.is_some())
         .map(|tweet| tweet.id)
@@ -53,9 +54,14 @@ pub async fn get_latest_tweet_date(user: NumericId) -> Option<OffsetDateTime> {
         .send()
         .await
         .expect("invalid user")
-        .into_data();
+        .into_data()
+        .unwrap_or(Vec::new());
 
-    my_tweets.map(|tweets| tweets[0].created_at).unwrap_or(None)
+    if my_tweets.is_empty() {
+        None
+    } else {
+        my_tweets[0].created_at
+    }
 }
 
 // Counts all unique users whose tweets included given keyword on a given day.
@@ -81,17 +87,16 @@ pub async fn count_tweets_with_keyword(keyword: &str, date: &Date) -> usize {
             .send()
             .await
             .expect("invalid query")
-            .into_data();
+            .into_data()
+            .unwrap_or(Vec::new());
 
-        match tweets.as_ref() {
-            None => {
-                size = 0;
-            }
-            Some(tweets) => {
-                users.extend(tweets.iter().map(|tweet| tweet.author_id));
-                size = tweets.len();
-                end_date = tweets[size - 1].created_at.expect("invalid size");
-            }
+        size = tweets
+            .iter()
+            .map(|tweet| users.insert(tweet.author_id))
+            .count();
+
+        if size > 0 {
+            end_date = tweets[size - 1].created_at.expect("invalid size");
         }
     }
 
