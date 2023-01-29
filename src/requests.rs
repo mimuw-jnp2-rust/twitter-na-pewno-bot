@@ -91,10 +91,7 @@ pub async fn count_tweets_with_keyword(keyword: &str, date: &Date) -> usize {
                 size = 0;
             }
             Some(tweets) => {
-                for tweet in tweets {
-                    users.insert(tweet.author_id);
-                }
-
+                users.extend(tweets.iter().flat_map(|tweet| tweet.author_id));
                 size = tweets.len();
                 end_date = tweets[size - 1].created_at.expect("invalid size");
             }
