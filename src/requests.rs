@@ -66,10 +66,11 @@ pub async fn get_latest_tweet(user: NumericId) -> Option<Tweet> {
     }
 }
 
-// Gets tweets containing given word since given tweet.
+// Gets tweets with mistake since given tweet.
 #[allow(dead_code)]
 pub async fn get_tweets_with_mistake(id: NumericId) -> Vec<Tweet> {
     let api = get_api_app_context();
+    // Gets no more than last MAXIMUM_NUMBER_OF_RESULTS tweets.
     api.get_tweets_search_recent(MISTAKE)
         .since_id(id)
         .max_results(MAXIMUM_NUMBER_OF_RESULTS)
