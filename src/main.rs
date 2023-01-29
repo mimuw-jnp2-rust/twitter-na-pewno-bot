@@ -4,9 +4,14 @@ mod strings;
 
 use crate::requests::{
     count_tweets_with_mistake, get_latest_reply_id, get_latest_tweet, get_my_user_id,
-    get_tweets_with_mistake, get_user_name, post_reply_with_message, post_tweet_with_message,
+    get_my_username, get_name_by_id, get_tweets_with_mistake, get_username_by_id,
+    post_reply_with_message, post_tweet_with_message,
 };
-use crate::strings::{extract_statistics, generate_reply, generate_tweet};
+use crate::strings::{
+    extract_statistics, generate_reply, generate_tweet, print_end_message, print_reply_message,
+    print_start_message, print_update_message,
+};
+
 use std::thread::sleep;
 use std::time::Duration;
 use time::OffsetDateTime;
@@ -18,8 +23,10 @@ const REQUEST_TIMEOUT_SECS: u64 = 60;
 async fn main() {
     // Load environment variables from .env file.
     dotenv::dotenv().expect(".env file should be readable");
+    print_start_message();
 
     let my_id = get_my_user_id().await.expect("invalid authorization");
+    let my_username = get_my_username().await.expect("invalid authorization");
     let my_latest_tweet = get_latest_tweet(my_id).await;
 
     // All time variables are in UTC.
@@ -42,24 +49,30 @@ async fn main() {
 
             let msg = generate_tweet(prev_stat, cur_stat);
             post_tweet_with_message(msg).await;
+            print_update_message(my_username);
         }
     } else {
         // No updates on the profile yet.
         let cur_stat = count_tweets_with_mistake(&prev_date).await;
         let msg = generate_tweet(0, cur_stat);
         post_tweet_with_message(msg).await;
+        print_update_message(my_username);
     }
 
     let my_latest_reply = get_latest_reply_id(my_id).await;
     let tweets_with_mistake = get_tweets_with_mistake(my_latest_reply).await;
 
     for tweet in tweets_with_mistake {
-        let user_id = tweet.author_id.expect("invalid user");
-        let name = get_user_name(user_id).await.expect("invalid user");
+        let id = tweet.author_id.expect("invalid user");
+        let username = get_username_by_id(id).await.expect("invalid user");
+        let name = get_name_by_id(id).await.expect("invalid user");
         let msg = generate_reply(name.as_str());
         post_reply_with_message(tweet.id, msg).await;
+        print_reply_message(tweet.id, username);
 
         // Avoid shadowban and never exceed the limit of posts.
         sleep(Duration::from_secs(REQUEST_TIMEOUT_SECS));
     }
+
+    print_end_message();
 }

@@ -23,6 +23,45 @@ pub async fn get_my_user_id() -> Option<NumericId> {
     me.map(|user| user.id)
 }
 
+// Gets username of currently authorized user.
+pub async fn get_my_username() -> Option<String> {
+    let api = get_api_user_context();
+    let me = api
+        .get_users_me()
+        .send()
+        .await
+        .expect("invalid user")
+        .into_data();
+
+    me.map(|user| user.username)
+}
+
+// Gets username by id.
+pub async fn get_username_by_id(id: NumericId) -> Option<String> {
+    let api = get_api_user_context();
+    let user = api
+        .get_user(id)
+        .send()
+        .await
+        .expect("invalid id")
+        .into_data();
+
+    user.map(|user| user.username)
+}
+
+// Gets name by id.
+pub async fn get_name_by_id(id: NumericId) -> Option<String> {
+    let api = get_api_user_context();
+    let user = api
+        .get_user(id)
+        .send()
+        .await
+        .expect("invalid id")
+        .into_data();
+
+    user.map(|user| user.name)
+}
+
 // Gets id of the latest reply of given user.
 pub async fn get_latest_reply_id(user: NumericId) -> Option<NumericId> {
     let api = get_api_app_context();
@@ -149,17 +188,4 @@ pub async fn post_reply_with_message(id: NumericId, message: String) {
         .send()
         .await
         .expect("invalid message");
-}
-
-// Gets username by id.
-pub async fn get_user_name(id: NumericId) -> Option<String> {
-    let api = get_api_user_context();
-    let user = api
-        .get_user(id)
-        .send()
-        .await
-        .expect("invalid id")
-        .into_data();
-
-    user.map(|user| user.name)
 }

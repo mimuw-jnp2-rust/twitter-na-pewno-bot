@@ -80,11 +80,9 @@ pub fn extract_statistics(text: &str) -> Option<usize> {
 
 // Prints start message.
 pub fn print_start_message() {
-    let msg = "[".to_string()
-        + &OffsetDateTime::now_utc().to_string()
-        + "] Starting a job...";
+    let msg = "[".to_string() + &OffsetDateTime::now_utc().to_string() + "] Starting a job...";
 
-    println!("{}", msg);
+    println!("\x1b[1m\x1b[32m{}\x1b[0m", msg);
 }
 
 // Prints message after updating statistics on the profile.
@@ -96,7 +94,7 @@ pub fn print_update_message(username: String) {
         + &username
         + ".";
 
-    println!("{}", msg);
+    println!("\x1b[1m{}\x1b[0m", msg);
 }
 
 // Prints message after replying to certain user.
@@ -115,9 +113,7 @@ pub fn print_reply_message(post_id: NumericId, username: String) {
 
 // Prints end message.
 pub fn print_end_message() {
-    let msg = "[".to_string()
-        + &OffsetDateTime::now_utc().to_string()
-        + "] The job is over.";
+    let msg = "[".to_string() + &OffsetDateTime::now_utc().to_string() + "] The job is over.";
 
-    println!("{}", msg);
+    println!("\x1b[1m\x1b[31m{}\x1b[0m", msg);
 }
