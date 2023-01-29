@@ -146,6 +146,18 @@ pub async fn post_tweet_with_message(message: String) {
         .expect("invalid message");
 }
 
+// Posts reply to provided tweet with given message.
+#[allow(dead_code)]
+pub async fn post_reply_with_message(id: NumericId, message: String) {
+    let api = get_api_user_context();
+    api.post_tweet()
+        .text(message)
+        .in_reply_to_tweet_id(id)
+        .send()
+        .await
+        .expect("invalid message");
+}
+
 // Gets username by id.
 #[allow(dead_code)]
 pub async fn get_user_name(id: NumericId) -> Option<String> {
