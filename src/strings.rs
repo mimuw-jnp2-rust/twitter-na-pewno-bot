@@ -1,6 +1,6 @@
+use rand::Rng;
 use std::string::ToString;
 use time::OffsetDateTime;
-use rand::Rng;
 
 const GREETINGS: [&str; 5] = ["Cześć", "Czołem", "Hej", "Serwus", "Witaj"];
 const GREETING_EMOJIS: [&str; 8] = ["👋", "🤝", "☺️", "🥰", "🤓", "🧐", "🤖", "👀"];
@@ -44,11 +44,19 @@ pub fn generate_tweet(prev_stat: usize, cur_stat: usize) -> String {
     } else {
         "\n\nTo wynik o ".to_string()
             + &diff.to_string()
-            + if prev_stat < cur_stat { " większy " } else { " mniejszy " }
+            + if prev_stat < cur_stat {
+                " większy "
+            } else {
+                " mniejszy "
+            }
             + "względem poprzedniego dnia "
             + if prev_stat < cur_stat { "(+" } else { "(-" }
             + &(diff as f32 / prev_stat as f32 * 100.0).round().to_string()
-            + if prev_stat < cur_stat { "%). 📈" } else { "%). 📉" }
+            + if prev_stat < cur_stat {
+                "%). 📈"
+            } else {
+                "%). 📉"
+            }
     };
 
     let today = OffsetDateTime::now_utc().date();
@@ -57,5 +65,17 @@ pub fn generate_tweet(prev_stat: usize, cur_stat: usize) -> String {
         + " wyrażenie 'na pewno' zostało błędnie napisane przez "
         + &cur_stat.to_string()
         + " użytkowników Twittera."
-        + &comparison
+        + &comparison;
+}
+
+// Extracts statistics (first integer) from text.
+#[allow(dead_code)]
+pub fn extract_statistics(text: &str) -> Option<usize> {
+    let size = text
+        .split_whitespace()
+        .map(|s| s.parse::<usize>())
+        .find(|s| s.is_ok())
+        .expect("invalid string");
+
+    size.ok()
 }
