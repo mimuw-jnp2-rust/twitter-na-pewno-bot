@@ -58,6 +58,8 @@ async fn main() {
         let name = get_user_name(user_id).await.expect("invalid user");
         let msg = generate_reply(name.as_str());
         post_reply_with_message(tweet.id, msg).await;
+
+        // Avoid shadowban and never exceed the limit of posts.
         sleep(Duration::from_secs(REQUEST_TIMEOUT_SECS));
     }
 }
