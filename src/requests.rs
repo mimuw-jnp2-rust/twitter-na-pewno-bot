@@ -7,7 +7,6 @@ use twitter_v2::query::TweetField::{AuthorId, CreatedAt, InReplyToUserId};
 
 const MINIMUM_NUMBER_OF_RESULTS: usize = 5;
 const MAXIMUM_NUMBER_OF_RESULTS: usize = 100;
-const DEFAULT_BADGE_SIZE: usize = 10;
 
 // Gets id of currently authorized user.
 #[allow(dead_code)]
@@ -67,7 +66,7 @@ pub async fn get_latest_tweet_date(user: NumericId) -> Option<OffsetDateTime> {
 pub async fn count_tweets_with_keyword(keyword: &str, date: &Date) -> usize {
     let api = get_api_app_context();
     let mut users = HashSet::new();
-    let mut size = DEFAULT_BADGE_SIZE;
+    let mut size = 1;
 
     let mut end_date = date
         .next_day()
