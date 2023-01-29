@@ -38,6 +38,7 @@ async fn main() {
             println!("{}", msg);
         }
     } else {
+        // No updates on the profile yet.
         let cur_stat = count_tweets_with_word(KEYWORD, &prev_date).await;
         let msg = generate_tweet(0, cur_stat);
         println!("{}", msg);
