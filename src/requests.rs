@@ -36,18 +36,10 @@ pub async fn get_latest_reply_id(user: NumericId) -> Option<NumericId> {
         .expect("invalid user")
         .into_data();
 
-    match my_tweets {
-        None => None,
-        Some(tweets) => {
-            for tweet in tweets {
-                if tweet.in_reply_to_user_id.is_some() {
-                    return Option::from(tweet.id);
-                }
-            }
-
-            None
-        }
-    }
+    my_tweets?
+        .iter()
+        .find(|tweet| tweet.in_reply_to_user_id.is_some())
+        .map(|tweet| tweet.id)
 }
 
 // Gets date of the latest tweet of given user.
