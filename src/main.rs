@@ -3,7 +3,8 @@ mod requests;
 mod strings;
 
 use crate::requests::{
-    count_tweets_with_mistake, get_latest_tweet, get_my_user_id, post_tweet_with_message,
+    count_tweets_with_mistake, get_latest_reply_id, get_latest_tweet, get_my_user_id,
+    get_tweets_with_mistake, post_tweet_with_message,
 };
 use crate::strings::{extract_statistics, generate_tweet};
 use time::OffsetDateTime;
@@ -42,5 +43,12 @@ async fn main() {
         let cur_stat = count_tweets_with_mistake(&prev_date).await;
         let msg = generate_tweet(0, cur_stat);
         post_tweet_with_message(msg).await;
+    }
+
+    let my_latest_reply = get_latest_reply_id(my_id).await;
+    let tweets_with_mistake = get_tweets_with_mistake(my_latest_reply).await;
+
+    for tweet in tweets_with_mistake {
+        println!("[{}] {}", tweet.created_at.unwrap(), tweet.text);
     }
 }

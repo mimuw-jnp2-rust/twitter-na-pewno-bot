@@ -68,17 +68,32 @@ pub async fn get_latest_tweet(user: NumericId) -> Option<Tweet> {
 
 // Gets tweets with mistake since given tweet.
 #[allow(dead_code)]
-pub async fn get_tweets_with_mistake(id: NumericId) -> Vec<Tweet> {
+pub async fn get_tweets_with_mistake(id: Option<NumericId>) -> Vec<Tweet> {
     let api = get_api_app_context();
+    let result = if let Some(id) = id {
+        api.get_tweets_search_recent(MISTAKE)
+            .tweet_fields([AuthorId, CreatedAt])
+            .since_id(id)
+            .max_results(MAXIMUM_NUMBER_OF_RESULTS)
+            .send()
+            .await
+    } else {
+        api.get_tweets_search_recent(MISTAKE)
+            .tweet_fields([AuthorId, CreatedAt])
+            .max_results(MAXIMUM_NUMBER_OF_RESULTS)
+            .send()
+            .await
+    };
+
     // Gets no more than last MAXIMUM_NUMBER_OF_RESULTS tweets.
-    api.get_tweets_search_recent(MISTAKE)
-        .since_id(id)
-        .max_results(MAXIMUM_NUMBER_OF_RESULTS)
-        .send()
-        .await
+    let mut tweets = result
         .expect("invalid query")
         .into_data()
-        .unwrap_or_default()
+        .unwrap_or_default();
+
+    // Take oldest tweets first.
+    tweets.reverse();
+    tweets
 }
 
 // Counts all unique users whose tweets included given word on a given day.
@@ -129,4 +144,18 @@ pub async fn post_tweet_with_message(message: String) {
         .send()
         .await
         .expect("invalid message");
+}
+
+// Gets username by id.
+#[allow(dead_code)]
+pub async fn get_username(id: NumericId) -> Option<String> {
+    let api = get_api_app_context();
+    let user = api
+        .get_user(id)
+        .send()
+        .await
+        .expect("invalid id")
+        .into_data();
+
+    user.map(|user| user.name)
 }
