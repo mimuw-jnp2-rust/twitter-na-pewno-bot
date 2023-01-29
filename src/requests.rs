@@ -1,9 +1,10 @@
 use crate::auth::{get_api_app_context, get_api_user_context};
 use std::collections::HashSet;
-use time::{Date, OffsetDateTime};
+use time::Date;
 use twitter_v2::id::NumericId;
 use twitter_v2::query::Exclude::Replies;
 use twitter_v2::query::TweetField::{AuthorId, CreatedAt, InReplyToUserId};
+use twitter_v2::Tweet;
 
 const MINIMUM_NUMBER_OF_RESULTS: usize = 5;
 const MAXIMUM_NUMBER_OF_RESULTS: usize = 100;
@@ -44,7 +45,7 @@ pub async fn get_latest_reply_id(user: NumericId) -> Option<NumericId> {
 
 // Gets date of the latest tweet of given user.
 #[allow(dead_code)]
-pub async fn get_latest_tweet_date(user: NumericId) -> Option<OffsetDateTime> {
+pub async fn get_latest_tweet(user: NumericId) -> Option<Tweet> {
     let api = get_api_app_context();
     let my_tweets = api
         .get_user_tweets(user)
@@ -60,13 +61,13 @@ pub async fn get_latest_tweet_date(user: NumericId) -> Option<OffsetDateTime> {
     if my_tweets.is_empty() {
         None
     } else {
-        my_tweets[0].created_at
+        Some(my_tweets[0].clone())
     }
 }
 
-// Counts all unique users whose tweets included given keyword on a given day.
+// Counts all unique users whose tweets included given word on a given day.
 #[allow(dead_code)]
-pub async fn count_tweets_with_keyword(keyword: &str, date: &Date) -> usize {
+pub async fn count_tweets_with_word(keyword: &str, date: &Date) -> usize {
     let api = get_api_app_context();
     let mut users = HashSet::new();
     let mut size = 1;
@@ -101,4 +102,15 @@ pub async fn count_tweets_with_keyword(keyword: &str, date: &Date) -> usize {
     }
 
     users.len()
+}
+
+// Posts tweet with given message.
+#[allow(dead_code)]
+pub async fn post_tweet_with_message(message: String) {
+    let api = get_api_user_context();
+    api.post_tweet()
+        .text(message)
+        .send()
+        .await
+        .expect("invalid message");
 }
