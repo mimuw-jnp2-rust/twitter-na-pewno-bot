@@ -2,7 +2,9 @@ mod auth;
 mod requests;
 mod strings;
 
-use crate::requests::{count_tweets_with_word, get_latest_tweet, get_my_user_id};
+use crate::requests::{
+    count_tweets_with_word, get_latest_tweet, get_my_user_id, post_tweet_with_message,
+};
 use crate::strings::{extract_statistics, generate_tweet};
 use time::OffsetDateTime;
 
@@ -35,12 +37,12 @@ async fn main() {
             };
 
             let msg = generate_tweet(prev_stat, cur_stat);
-            println!("{}", msg);
+            post_tweet_with_message(msg).await;
         }
     } else {
         // No updates on the profile yet.
         let cur_stat = count_tweets_with_word(KEYWORD, &prev_date).await;
         let msg = generate_tweet(0, cur_stat);
-        println!("{}", msg);
+        post_tweet_with_message(msg).await;
     }
 }
