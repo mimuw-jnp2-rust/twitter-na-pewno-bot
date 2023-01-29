@@ -3,13 +3,13 @@ mod requests;
 mod strings;
 
 use crate::requests::{
-    count_tweets_with_mistake, get_latest_reply_id, get_latest_tweet, get_my_user_id,
-    get_my_username, get_name_by_id, get_tweets_with_mistake, get_username_by_id,
-    post_reply_with_message, post_tweet_with_message,
+    count_tweets_with_mistake, get_latest_reply_id, get_latest_tweet,
+    get_my_user_id, get_my_username, get_name_by_id, get_tweets_with_mistake,
+    get_username_by_id, post_reply_with_message, post_tweet_with_message,
 };
 use crate::strings::{
-    extract_statistics, generate_reply, generate_tweet, print_end_message, print_reply_message,
-    print_start_message, print_update_message,
+    extract_statistics, generate_reply, generate_tweet, print_end_message,
+    print_reply_message, print_start_message, print_update_message,
 };
 
 use std::thread::sleep;
