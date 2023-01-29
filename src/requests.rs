@@ -34,7 +34,7 @@ pub async fn get_latest_reply_id(user: NumericId) -> Option<NumericId> {
         .await
         .expect("invalid user")
         .into_data()
-        .unwrap_or(Vec::new());
+        .unwrap_or_default();
 
     my_tweets
         .iter()
@@ -55,7 +55,7 @@ pub async fn get_latest_tweet_date(user: NumericId) -> Option<OffsetDateTime> {
         .await
         .expect("invalid user")
         .into_data()
-        .unwrap_or(Vec::new());
+        .unwrap_or_default();
 
     if my_tweets.is_empty() {
         None
@@ -88,7 +88,7 @@ pub async fn count_tweets_with_keyword(keyword: &str, date: &Date) -> usize {
             .await
             .expect("invalid query")
             .into_data()
-            .unwrap_or(Vec::new());
+            .unwrap_or_default();
 
         size = tweets
             .iter()
