@@ -11,7 +11,6 @@ const SPELLING_WORDS: [&str; 2] = ["piszemy", "pisze się"];
 const DIVISION_WORDS: [&str; 3] = ["osobno", "rozdzielnie", "rozłącznie"];
 
 // Generates reply for tweet containing 'napewno'.
-#[allow(dead_code)]
 pub fn generate_reply(username: &str) -> String {
     let mut rng = rand::thread_rng();
     GREETINGS[rng.gen_range(0..GREETINGS.len())].to_string()
@@ -33,7 +32,6 @@ pub fn generate_reply(username: &str) -> String {
 }
 
 // Generates tweet with daily statistics.
-#[allow(dead_code)]
 pub fn generate_tweet(prev_stat: usize, cur_stat: usize) -> String {
     let diff = prev_stat.abs_diff(cur_stat);
     let comparison = if prev_stat == 0 {
@@ -69,7 +67,6 @@ pub fn generate_tweet(prev_stat: usize, cur_stat: usize) -> String {
 }
 
 // Extracts statistics (first integer) from text.
-#[allow(dead_code)]
 pub fn extract_statistics(text: &str) -> Option<usize> {
     let size = text
         .split_whitespace()

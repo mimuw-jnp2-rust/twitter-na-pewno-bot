@@ -11,7 +11,6 @@ const MINIMUM_NUMBER_OF_RESULTS: usize = 5;
 const MAXIMUM_NUMBER_OF_RESULTS: usize = 100;
 
 // Gets id of currently authorized user.
-#[allow(dead_code)]
 pub async fn get_my_user_id() -> Option<NumericId> {
     let api = get_api_user_context();
     let me = api
@@ -25,7 +24,6 @@ pub async fn get_my_user_id() -> Option<NumericId> {
 }
 
 // Gets id of the latest reply of given user.
-#[allow(dead_code)]
 pub async fn get_latest_reply_id(user: NumericId) -> Option<NumericId> {
     let api = get_api_app_context();
     let my_tweets = api
@@ -45,7 +43,6 @@ pub async fn get_latest_reply_id(user: NumericId) -> Option<NumericId> {
 }
 
 // Gets date of the latest tweet of given user.
-#[allow(dead_code)]
 pub async fn get_latest_tweet(user: NumericId) -> Option<Tweet> {
     let api = get_api_app_context();
     let my_tweets = api
@@ -67,7 +64,6 @@ pub async fn get_latest_tweet(user: NumericId) -> Option<Tweet> {
 }
 
 // Gets tweets with mistake since given tweet.
-#[allow(dead_code)]
 pub async fn get_tweets_with_mistake(id: Option<NumericId>) -> Vec<Tweet> {
     let api = get_api_app_context();
     let result = if let Some(id) = id {
@@ -97,7 +93,6 @@ pub async fn get_tweets_with_mistake(id: Option<NumericId>) -> Vec<Tweet> {
 }
 
 // Counts all unique users whose tweets included given word on a given day.
-#[allow(dead_code)]
 pub async fn count_tweets_with_mistake(date: &Date) -> usize {
     let api = get_api_app_context();
     let mut users = HashSet::new();
@@ -136,7 +131,6 @@ pub async fn count_tweets_with_mistake(date: &Date) -> usize {
 }
 
 // Posts tweet with given message.
-#[allow(dead_code)]
 pub async fn post_tweet_with_message(message: String) {
     let api = get_api_user_context();
     api.post_tweet()
@@ -147,7 +141,6 @@ pub async fn post_tweet_with_message(message: String) {
 }
 
 // Posts reply to provided tweet with given message.
-#[allow(dead_code)]
 pub async fn post_reply_with_message(id: NumericId, message: String) {
     let api = get_api_user_context();
     api.post_tweet()
@@ -159,7 +152,6 @@ pub async fn post_reply_with_message(id: NumericId, message: String) {
 }
 
 // Gets username by id.
-#[allow(dead_code)]
 pub async fn get_user_name(id: NumericId) -> Option<String> {
     let api = get_api_user_context();
     let user = api

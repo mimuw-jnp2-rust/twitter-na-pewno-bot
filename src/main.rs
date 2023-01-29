@@ -4,10 +4,15 @@ mod strings;
 
 use crate::requests::{
     count_tweets_with_mistake, get_latest_reply_id, get_latest_tweet, get_my_user_id,
-    get_tweets_with_mistake, get_user_name, post_tweet_with_message,
+    get_tweets_with_mistake, get_user_name, post_reply_with_message, post_tweet_with_message,
 };
 use crate::strings::{extract_statistics, generate_reply, generate_tweet};
+use std::thread::sleep;
+use std::time::Duration;
 use time::OffsetDateTime;
+
+// Due to the limit of 100 Tweets per hour.
+const REQUEST_TIMEOUT_SECS: u64 = 60;
 
 #[tokio::main]
 async fn main() {
@@ -49,8 +54,10 @@ async fn main() {
     let tweets_with_mistake = get_tweets_with_mistake(my_latest_reply).await;
 
     for tweet in tweets_with_mistake {
-        let name = get_user_name(tweet.author_id.unwrap()).await.unwrap();
+        let user_id = tweet.author_id.expect("invalid user");
+        let name = get_user_name(user_id).await.expect("invalid user");
         let msg = generate_reply(name.as_str());
-        println!("{}", msg);
+        post_reply_with_message(tweet.id, msg).await;
+        sleep(Duration::from_secs(REQUEST_TIMEOUT_SECS));
     }
 }
