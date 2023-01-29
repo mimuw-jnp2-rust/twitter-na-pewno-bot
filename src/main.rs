@@ -3,7 +3,7 @@ mod requests;
 mod strings;
 
 use crate::requests::{
-    count_tweets_with_mistake, get_latest_reply_id, get_latest_tweet, get_my_user_id,
+    count_tweets_with_mistake, get_initial_tweet, get_latest_tweet, get_my_user_id,
     get_my_username, get_name_by_id, get_tweets_with_mistake, get_username_by_id,
     post_reply_with_message, post_tweet_with_message,
 };
@@ -59,8 +59,8 @@ async fn main() {
         print_update_message(my_username);
     }
 
-    let my_latest_reply = get_latest_reply_id(my_id).await;
-    let tweets_with_mistake = get_tweets_with_mistake(my_latest_reply).await;
+    let initial_tweet_id = get_initial_tweet(my_id).await;
+    let tweets_with_mistake = get_tweets_with_mistake(initial_tweet_id).await;
 
     for tweet in tweets_with_mistake {
         let id = tweet.author_id.expect("invalid user");

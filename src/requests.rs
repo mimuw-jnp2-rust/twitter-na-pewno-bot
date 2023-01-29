@@ -1,15 +1,17 @@
 use crate::auth::{get_api_app_context, get_api_user_context};
 
 use std::collections::HashSet;
+use std::ops::Sub;
 use time::Date;
 use twitter_v2::id::NumericId;
 use twitter_v2::query::Exclude::Replies;
-use twitter_v2::query::TweetField::{AuthorId, CreatedAt, InReplyToUserId};
+use twitter_v2::query::TweetField::{AuthorId, CreatedAt};
 use twitter_v2::Tweet;
 
-const MISTAKE: &str = "napewno";
+const MINIMUM_BREAK_AFTER_RUN: f32 = 100.0;
 const MINIMUM_NUMBER_OF_RESULTS: usize = 5;
 const MAXIMUM_NUMBER_OF_RESULTS: usize = 100;
+const MISTAKE: &str = "napewno";
 
 // Gets id of currently authorized user.
 pub async fn get_my_user_id() -> Option<NumericId> {
@@ -63,26 +65,39 @@ pub async fn get_name_by_id(id: NumericId) -> Option<String> {
     user.map(|user| user.name)
 }
 
-// Gets id of the latest reply of given user.
-pub async fn get_latest_reply_id(user: NumericId) -> Option<NumericId> {
+// Gets the id of the latest tweet, after which user stopped searching.
+pub async fn get_initial_tweet(user: NumericId) -> NumericId {
     let api = get_api_app_context();
     let my_tweets = api
         .get_user_tweets(user)
-        .tweet_fields([InReplyToUserId])
-        .max_results(MINIMUM_NUMBER_OF_RESULTS)
+        .tweet_fields([CreatedAt])
+        .max_results(MAXIMUM_NUMBER_OF_RESULTS)
         .send()
         .await
         .expect("invalid user")
         .into_data()
         .unwrap_or_default();
 
-    my_tweets
-        .iter()
-        .find(|tweet| tweet.in_reply_to_user_id.is_some())
-        .map(|tweet| tweet.id)
+    let mut i = 0;
+    while i < my_tweets.len() - 1 {
+        println!(
+            "[{}] {}",
+            my_tweets[i].created_at.unwrap(),
+            my_tweets[i].text
+        );
+        let cur_date = my_tweets[i].created_at.expect("invalid date");
+        let next_date = my_tweets[i + 1].created_at.expect("invalid date");
+        if cur_date.sub(next_date).as_seconds_f32() > MINIMUM_BREAK_AFTER_RUN {
+            return my_tweets[i].id;
+        }
+
+        i += 1;
+    }
+
+    my_tweets[i].id
 }
 
-// Gets date of the latest tweet of given user.
+// Gets the latest tweet of given user.
 pub async fn get_latest_tweet(user: NumericId) -> Option<Tweet> {
     let api = get_api_app_context();
     let my_tweets = api
@@ -104,25 +119,16 @@ pub async fn get_latest_tweet(user: NumericId) -> Option<Tweet> {
 }
 
 // Gets tweets with mistake since given tweet.
-pub async fn get_tweets_with_mistake(id: Option<NumericId>) -> Vec<Tweet> {
+pub async fn get_tweets_with_mistake(id: NumericId) -> Vec<Tweet> {
     let api = get_api_app_context();
-    let result = if let Some(id) = id {
-        api.get_tweets_search_recent(MISTAKE)
-            .tweet_fields([AuthorId, CreatedAt])
-            .since_id(id)
-            .max_results(MAXIMUM_NUMBER_OF_RESULTS)
-            .send()
-            .await
-    } else {
-        api.get_tweets_search_recent(MISTAKE)
-            .tweet_fields([AuthorId, CreatedAt])
-            .max_results(MAXIMUM_NUMBER_OF_RESULTS)
-            .send()
-            .await
-    };
-
     // Gets no more than last MAXIMUM_NUMBER_OF_RESULTS tweets.
-    let mut tweets = result
+    let mut tweets = api
+        .get_tweets_search_recent(MISTAKE)
+        .tweet_fields([AuthorId, CreatedAt])
+        .since_id(id)
+        .max_results(MAXIMUM_NUMBER_OF_RESULTS)
+        .send()
+        .await
         .expect("invalid query")
         .into_data()
         .unwrap_or_default();
