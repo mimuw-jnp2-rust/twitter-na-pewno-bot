@@ -4,7 +4,7 @@ use time::OffsetDateTime;
 
 const GREETINGS: [&str; 5] = ["Cześć", "Czołem", "Hej", "Serwus", "Witaj"];
 const GREETING_EMOJIS: [&str; 8] = ["👋", "🤝", "☺️", "🥰", "🤓", "🧐", "🤖", "👀"];
-const APOLOGIES: [&str; 3] = ["Daruj", "Wybacz", "Przepraszam za"];
+const APOLOGIES: [&str; 3] = ["Daruj mi", "Wybacz mi", "Przepraszam za"];
 const BRAVERY_WORDS: [&str; 3] = ["brawurę", "śmiałość", "zuchwałość"];
 const PHRASE_WORDS: [&str; 2] = ["frazę", "wyrażenie"];
 const SPELLING_WORDS: [&str; 2] = ["piszemy", "pisze się"];

@@ -148,8 +148,8 @@ pub async fn post_tweet_with_message(message: String) {
 
 // Gets username by id.
 #[allow(dead_code)]
-pub async fn get_username(id: NumericId) -> Option<String> {
-    let api = get_api_app_context();
+pub async fn get_user_name(id: NumericId) -> Option<String> {
+    let api = get_api_user_context();
     let user = api
         .get_user(id)
         .send()

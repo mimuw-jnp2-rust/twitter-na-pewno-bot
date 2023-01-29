@@ -4,9 +4,9 @@ mod strings;
 
 use crate::requests::{
     count_tweets_with_mistake, get_latest_reply_id, get_latest_tweet, get_my_user_id,
-    get_tweets_with_mistake, post_tweet_with_message,
+    get_tweets_with_mistake, get_user_name, post_tweet_with_message,
 };
-use crate::strings::{extract_statistics, generate_tweet};
+use crate::strings::{extract_statistics, generate_reply, generate_tweet};
 use time::OffsetDateTime;
 
 #[tokio::main]
@@ -49,6 +49,8 @@ async fn main() {
     let tweets_with_mistake = get_tweets_with_mistake(my_latest_reply).await;
 
     for tweet in tweets_with_mistake {
-        println!("[{}] {}", tweet.created_at.unwrap(), tweet.text);
+        let name = get_user_name(tweet.author_id.unwrap()).await.unwrap();
+        let msg = generate_reply(name.as_str());
+        println!("{}", msg);
     }
 }
