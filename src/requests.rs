@@ -113,5 +113,5 @@ pub async fn count_tweets_with_keyword(keyword: &str, date: &Date) -> usize {
         }
     }
 
-    return users.len();
+    users.len()
 }
