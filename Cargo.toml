@@ -12,6 +12,7 @@ keywords = ["twitter", "bot", "rust", "na-pewno"]
 
 [dependencies]
 tokio = { version = "1.23.0", features = ["macros"] }
+rand = "0.8.5"
 time = "0.3.17"
 twitter-v2 = "0.1.8"
 dotenv = "0.15.0"
