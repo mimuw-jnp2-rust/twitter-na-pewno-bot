@@ -80,11 +80,6 @@ pub async fn get_initial_tweet(user: NumericId) -> NumericId {
 
     let mut i = 0;
     while i < my_tweets.len() - 1 {
-        println!(
-            "[{}] {}",
-            my_tweets[i].created_at.unwrap(),
-            my_tweets[i].text
-        );
         let cur_date = my_tweets[i].created_at.expect("invalid date");
         let next_date = my_tweets[i + 1].created_at.expect("invalid date");
         if cur_date.sub(next_date).as_seconds_f32() > MINIMUM_BREAK_AFTER_RUN {
