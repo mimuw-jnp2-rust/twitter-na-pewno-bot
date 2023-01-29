@@ -35,5 +35,6 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 ## Libraries
 - [twitter_v2](https://docs.rs/twitter-v2/latest/twitter_v2/)
 - [tokio](https://docs.rs/tokio/latest/tokio/)
+- [rand](https://docs.rs/rand/latest/rand/)
 - [time](https://docs.rs/time/latest/time/)
 - [dotenv](https://docs.rs/dotenv/latest/dotenv/)
