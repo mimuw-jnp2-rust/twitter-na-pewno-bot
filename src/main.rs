@@ -20,6 +20,7 @@ async fn main() -> Result<(), Error> {
     dotenv::dotenv().expect(".env file should be readable");
 
     let api = get_api_user_context();
+
     // All time variables are in UTC.
     let mut cur_time = OffsetDateTime::now_utc();
     let mut start_time = cur_time - Duration::from_secs(MINIMUM_PRIOR_SECS);
