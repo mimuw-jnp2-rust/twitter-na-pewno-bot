@@ -14,22 +14,22 @@ const DIVISION_WORDS: [&str; 3] = ["osobno", "rozdzielnie", "rozłącznie"];
 #[allow(dead_code)]
 pub fn generate_reply(username: &str) -> String {
     let mut rng = rand::thread_rng();
-    return GREETINGS[rng.gen_range(0..GREETINGS.len())].to_string()
+    GREETINGS[rng.gen_range(0..GREETINGS.len())].to_string()
         + " "
-        + &username.to_string()
+        + username
         + "! "
-        + &GREETING_EMOJIS[rng.gen_range(0..GREETING_EMOJIS.len())].to_string()
+        + GREETING_EMOJIS[rng.gen_range(0..GREETING_EMOJIS.len())]
         + "\n"
-        + &APOLOGIES[rng.gen_range(0..APOLOGIES.len())].to_string()
+        + APOLOGIES[rng.gen_range(0..APOLOGIES.len())]
         + " moją "
-        + &BRAVERY_WORDS[rng.gen_range(0..BRAVERY_WORDS.len())].to_string()
+        + BRAVERY_WORDS[rng.gen_range(0..BRAVERY_WORDS.len())]
         + ", ale "
-        + &PHRASE_WORDS[rng.gen_range(0..PHRASE_WORDS.len())].to_string()
+        + PHRASE_WORDS[rng.gen_range(0..PHRASE_WORDS.len())]
         + " 'na pewno' "
-        + &SPELLING_WORDS[rng.gen_range(0..SPELLING_WORDS.len())].to_string()
+        + SPELLING_WORDS[rng.gen_range(0..SPELLING_WORDS.len())]
         + " "
-        + &DIVISION_WORDS[rng.gen_range(0..DIVISION_WORDS.len())].to_string()
-        + ".";
+        + DIVISION_WORDS[rng.gen_range(0..DIVISION_WORDS.len())]
+        + "."
 }
 
 // Generates tweet with daily statistics.
@@ -60,12 +60,12 @@ pub fn generate_tweet(prev_stat: usize, cur_stat: usize) -> String {
     };
 
     let today = OffsetDateTime::now_utc().date();
-    return "W dniu ".to_owned()
+    "W dniu ".to_owned()
         + &today.previous_day().expect("invalid date").to_string()
         + " wyrażenie 'na pewno' zostało błędnie napisane przez "
         + &cur_stat.to_string()
         + " użytkowników Twittera."
-        + &comparison;
+        + &comparison
 }
 
 // Extracts statistics (first integer) from text.
