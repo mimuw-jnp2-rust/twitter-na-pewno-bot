@@ -6,6 +6,7 @@ use twitter_v2::query::Exclude::Replies;
 use twitter_v2::query::TweetField::{AuthorId, CreatedAt, InReplyToUserId};
 use twitter_v2::Tweet;
 
+const MISTAKE: &str = "napewno";
 const MINIMUM_NUMBER_OF_RESULTS: usize = 5;
 const MAXIMUM_NUMBER_OF_RESULTS: usize = 100;
 
@@ -65,9 +66,23 @@ pub async fn get_latest_tweet(user: NumericId) -> Option<Tweet> {
     }
 }
 
+// Gets tweets containing given word since given tweet.
+#[allow(dead_code)]
+pub async fn get_tweets_with_mistake(id: NumericId) -> Vec<Tweet> {
+    let api = get_api_app_context();
+    api.get_tweets_search_recent(MISTAKE)
+        .since_id(id)
+        .max_results(MAXIMUM_NUMBER_OF_RESULTS)
+        .send()
+        .await
+        .expect("invalid query")
+        .into_data()
+        .unwrap_or_default()
+}
+
 // Counts all unique users whose tweets included given word on a given day.
 #[allow(dead_code)]
-pub async fn count_tweets_with_word(keyword: &str, date: &Date) -> usize {
+pub async fn count_tweets_with_mistake(date: &Date) -> usize {
     let api = get_api_app_context();
     let mut users = HashSet::new();
     let mut size = 1;
@@ -80,7 +95,7 @@ pub async fn count_tweets_with_word(keyword: &str, date: &Date) -> usize {
 
     while size != 0 {
         let tweets = api
-            .get_tweets_search_recent(keyword)
+            .get_tweets_search_recent(MISTAKE)
             .tweet_fields([AuthorId, CreatedAt])
             .start_time(date.midnight().assume_utc())
             .end_time(end_date)
