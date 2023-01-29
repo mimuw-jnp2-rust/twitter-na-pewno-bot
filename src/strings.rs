@@ -1,6 +1,7 @@
 use rand::Rng;
 use std::string::ToString;
 use time::OffsetDateTime;
+use twitter_v2::id::NumericId;
 
 const GREETINGS: [&str; 5] = ["Cześć", "Czołem", "Hej", "Serwus", "Witaj"];
 const GREETING_EMOJIS: [&str; 8] = ["👋", "🤝", "☺️", "🥰", "🤓", "🧐", "🤖", "👀"];
@@ -75,4 +76,48 @@ pub fn extract_statistics(text: &str) -> Option<usize> {
         .expect("invalid string");
 
     size.ok()
+}
+
+// Prints start message.
+pub fn print_start_message() {
+    let msg = "[".to_string()
+        + &OffsetDateTime::now_utc().to_string()
+        + "] Starting a job...";
+
+    println!("{}", msg);
+}
+
+// Prints message after updating statistics on the profile.
+pub fn print_update_message(username: String) {
+    let msg = "[".to_string()
+        + &OffsetDateTime::now_utc().to_string()
+        + "] Posted a profile update with the latest statistics - "
+        + "https://twitter.com/"
+        + &username
+        + ".";
+
+    println!("{}", msg);
+}
+
+// Prints message after replying to certain user.
+pub fn print_reply_message(post_id: NumericId, username: String) {
+    let msg = "[".to_string()
+        + &OffsetDateTime::now_utc().to_string()
+        + "] Posted a reply to the following Tweet: "
+        + "https://twitter.com/"
+        + &username
+        + "/status/"
+        + &post_id.to_string()
+        + ".";
+
+    println!("{}", msg);
+}
+
+// Prints end message.
+pub fn print_end_message() {
+    let msg = "[".to_string()
+        + &OffsetDateTime::now_utc().to_string()
+        + "] The job is over.";
+
+    println!("{}", msg);
 }
