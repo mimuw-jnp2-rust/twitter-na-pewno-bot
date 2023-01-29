@@ -55,10 +55,7 @@ pub async fn get_latest_tweet_date(user: NumericId) -> Option<OffsetDateTime> {
         .expect("invalid user")
         .into_data();
 
-    match my_tweets {
-        None => None,
-        Some(tweets) => tweets[0].created_at,
-    }
+    my_tweets.map(|tweets| tweets[0].created_at).unwrap_or(None)
 }
 
 // Counts all unique users whose tweets included given keyword on a given day.
@@ -91,7 +88,7 @@ pub async fn count_tweets_with_keyword(keyword: &str, date: &Date) -> usize {
                 size = 0;
             }
             Some(tweets) => {
-                users.extend(tweets.iter().flat_map(|tweet| tweet.author_id));
+                users.extend(tweets.iter().map(|tweet| tweet.author_id));
                 size = tweets.len();
                 end_date = tweets[size - 1].created_at.expect("invalid size");
             }
