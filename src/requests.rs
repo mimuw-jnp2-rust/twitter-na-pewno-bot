@@ -20,10 +20,7 @@ pub async fn get_my_user_id() -> Option<NumericId> {
         .expect("invalid user")
         .into_data();
 
-    match me {
-        None => None,
-        Some(me) => Option::from(me.id),
-    }
+    me.map(|me| me.id)
 }
 
 // Gets id of the latest reply of given user.
