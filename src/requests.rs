@@ -11,7 +11,7 @@ use twitter_v2::Tweet;
 const MINIMUM_BREAK_AFTER_RUN: f32 = 100.0;
 const MINIMUM_NUMBER_OF_RESULTS: usize = 5;
 const MAXIMUM_NUMBER_OF_RESULTS: usize = 100;
-const MISTAKE: &str = "napewno";
+const MISTAKE: &str = "napewno -filter:retweets";
 
 // Gets id of currently authorized user.
 pub async fn get_my_user_id() -> Option<NumericId> {
@@ -111,7 +111,7 @@ pub async fn get_tweets_with_mistake(id: NumericId) -> Vec<Tweet> {
     let api = get_api_app_context();
     // Gets no more than last MAXIMUM_NUMBER_OF_RESULTS tweets.
     let tweets = api
-        .get_tweets_search_recent(MISTAKE.to_string() + " -is:retweet")
+        .get_tweets_search_recent(MISTAKE)
         .tweet_fields([AuthorId, CreatedAt])
         .since_id(id)
         .max_results(MAXIMUM_NUMBER_OF_RESULTS)
@@ -139,7 +139,7 @@ pub async fn count_tweets_with_mistake(date: &Date) -> usize {
 
     while size != 0 {
         let tweets = api
-            .get_tweets_search_recent(MISTAKE.to_string() + " -is:retweet")
+            .get_tweets_search_recent(MISTAKE)
             .tweet_fields([AuthorId, CreatedAt])
             .start_time(date.midnight().assume_utc())
             .end_time(end_date)
