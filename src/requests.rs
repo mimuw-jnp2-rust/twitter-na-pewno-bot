@@ -78,18 +78,15 @@ pub async fn get_initial_tweet(user: NumericId) -> NumericId {
         .into_data()
         .unwrap_or_default();
 
-    let mut i = 0;
-    while i < my_tweets.len() - 1 {
-        let cur_date = my_tweets[i].created_at.expect("invalid date");
-        let next_date = my_tweets[i + 1].created_at.expect("invalid date");
-        if cur_date.sub(next_date).as_seconds_f32() > MINIMUM_BREAK_AFTER_RUN {
-            return my_tweets[i].id;
-        }
+    let index = (0..my_tweets.len() - 1)
+        .find(|&i| {
+            let cur_date = my_tweets[i].created_at.expect("invalid date");
+            let next_date = my_tweets[i + 1].created_at.expect("invalid date");
+            cur_date.sub(next_date).as_seconds_f32() > MINIMUM_BREAK_AFTER_RUN
+        })
+        .unwrap_or(my_tweets.len() - 1);
 
-        i += 1;
-    }
-
-    my_tweets[i].id
+    my_tweets[index].id
 }
 
 // Gets the latest tweet of given user.
@@ -106,11 +103,7 @@ pub async fn get_latest_tweet(user: NumericId) -> Option<Tweet> {
         .into_data()
         .unwrap_or_default();
 
-    if my_tweets.is_empty() {
-        None
-    } else {
-        Some(my_tweets[0].clone())
-    }
+    my_tweets.first().cloned()
 }
 
 // Gets tweets with mistake since given tweet.
@@ -129,8 +122,7 @@ pub async fn get_tweets_with_mistake(id: NumericId) -> Vec<Tweet> {
         .unwrap_or_default();
 
     // Take oldest tweets first.
-    tweets.reverse();
-    tweets
+    tweets.into_iter().rev().collect::<Vec<_>>()
 }
 
 // Counts all unique users whose tweets included given word on a given day.
