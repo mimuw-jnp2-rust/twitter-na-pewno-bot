@@ -4,7 +4,7 @@ use std::collections::HashSet;
 use std::ops::Sub;
 use time::Date;
 use twitter_v2::id::NumericId;
-use twitter_v2::query::Exclude::{Replies, Retweets};
+use twitter_v2::query::Exclude::{Replies};
 use twitter_v2::query::TweetField::{AuthorId, CreatedAt};
 use twitter_v2::Tweet;
 
@@ -111,9 +111,8 @@ pub async fn get_tweets_with_mistake(id: NumericId) -> Vec<Tweet> {
     let api = get_api_app_context();
     // Gets no more than last MAXIMUM_NUMBER_OF_RESULTS tweets.
     let tweets = api
-        .get_tweets_search_recent(MISTAKE)
+        .get_tweets_search_recent(MISTAKE.to_string() + "-is:retweet")
         .tweet_fields([AuthorId, CreatedAt])
-        .exclude([Retweets])
         .since_id(id)
         .max_results(MAXIMUM_NUMBER_OF_RESULTS)
         .send()
@@ -140,9 +139,8 @@ pub async fn count_tweets_with_mistake(date: &Date) -> usize {
 
     while size != 0 {
         let tweets = api
-            .get_tweets_search_recent(MISTAKE)
+            .get_tweets_search_recent(MISTAKE.to_string() + "-is:retweet")
             .tweet_fields([AuthorId, CreatedAt])
-            .exclude([Retweets])
             .start_time(date.midnight().assume_utc())
             .end_time(end_date)
             .max_results(MAXIMUM_NUMBER_OF_RESULTS)
