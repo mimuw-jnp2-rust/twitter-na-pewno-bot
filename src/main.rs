@@ -62,26 +62,18 @@ async fn main() {
     let initial_tweet_id = get_initial_tweet(my_id).await;
     let tweets_with_mistake = get_tweets_with_mistake(initial_tweet_id).await;
 
-    tweets_with_mistake
-        .into_iter()
-        .map(|tweet| {
-            tokio::spawn(async move {
-                let id = tweet.author_id.expect("invalid user");
-                let user = get_username_by_id(id).await.expect("invalid user");
-                let name = get_name_by_id(id).await.expect("invalid user");
-                let msg = generate_reply(name.as_str());
-                (tweet.id, msg, user)
-            });
-        })
-        .for_each(|(tweet_id, msg, username)| {
-            tokio::spawn(async move {
-                post_reply_with_message(tweet_id, msg).await;
-                print_reply_message(tweet_id, username);
-            });
+    // Can not use iterator here, because of instability of async closures.
+    for tweet in tweets_with_mistake {
+        let id = tweet.author_id.expect("invalid user");
+        let username = get_username_by_id(id).await.expect("invalid user");
+        let name = get_name_by_id(id).await.expect("invalid user");
+        let msg = generate_reply(name.as_str());
+        post_reply_with_message(tweet.id, msg).await;
+        print_reply_message(tweet.id, username);
 
-            // Avoid shadowban and never exceed the limit of posts.
-            sleep(Duration::from_secs(REQUEST_TIMEOUT_SECS));
-        });
+        // Avoid shadowban and never exceed the limit of posts.
+        sleep(Duration::from_secs(REQUEST_TIMEOUT_SECS));
+    }
 
     print_end_message();
 }

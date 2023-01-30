@@ -110,7 +110,7 @@ pub async fn get_latest_tweet(user: NumericId) -> Option<Tweet> {
 pub async fn get_tweets_with_mistake(id: NumericId) -> Vec<Tweet> {
     let api = get_api_app_context();
     // Gets no more than last MAXIMUM_NUMBER_OF_RESULTS tweets.
-    let mut tweets = api
+    let tweets = api
         .get_tweets_search_recent(MISTAKE)
         .tweet_fields([AuthorId, CreatedAt])
         .since_id(id)
