@@ -111,7 +111,7 @@ pub async fn get_tweets_with_mistake(id: NumericId) -> Vec<Tweet> {
     let api = get_api_app_context();
     // Gets no more than last MAXIMUM_NUMBER_OF_RESULTS tweets.
     let tweets = api
-        .get_tweets_search_recent(MISTAKE.to_string() + "-is:retweet")
+        .get_tweets_search_recent(MISTAKE.to_string() + " -is:retweet")
         .tweet_fields([AuthorId, CreatedAt])
         .since_id(id)
         .max_results(MAXIMUM_NUMBER_OF_RESULTS)
@@ -139,7 +139,7 @@ pub async fn count_tweets_with_mistake(date: &Date) -> usize {
 
     while size != 0 {
         let tweets = api
-            .get_tweets_search_recent(MISTAKE.to_string() + "-is:retweet")
+            .get_tweets_search_recent(MISTAKE.to_string() + " -is:retweet")
             .tweet_fields([AuthorId, CreatedAt])
             .start_time(date.midnight().assume_utc())
             .end_time(end_date)
