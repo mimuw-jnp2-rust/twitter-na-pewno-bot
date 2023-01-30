@@ -11,7 +11,7 @@ use twitter_v2::Tweet;
 const MINIMUM_BREAK_AFTER_RUN: f32 = 100.0;
 const MINIMUM_NUMBER_OF_RESULTS: usize = 5;
 const MAXIMUM_NUMBER_OF_RESULTS: usize = 100;
-const MISTAKE: &str = "napewno -filter:retweets";
+const MISTAKE: &str = "napewno -is:retweet";
 
 // Gets id of currently authorized user.
 pub async fn get_my_user_id() -> Option<NumericId> {
