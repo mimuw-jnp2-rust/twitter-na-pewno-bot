@@ -135,3 +135,33 @@ pub fn print_end_message() {
 
     println!("\x1b[1m\x1b[31m{}\x1b[0m", msg);
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use twitter_v2::Result;
+
+    const LONGEST_USERNAME: usize = 15;
+    const CHARACTERS_LIMIT: usize = 280;
+    const MAX_ERRORS_DAILY: usize = 100000;
+
+    #[tokio::test]
+    async fn test_generate_reply() -> Result<()> {
+        assert!(generate_reply("").len() + LONGEST_USERNAME <= CHARACTERS_LIMIT);
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_generate_tweet() -> Result<()> {
+        let longest = MAX_ERRORS_DAILY;
+        assert!(generate_tweet(longest, longest).len() <= CHARACTERS_LIMIT);
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_extract_statistics() -> Result<()> {
+        let string = "   \n\n\0\0 01a a1 1111-11-11 111";
+        assert_eq!(extract_statistics(string).unwrap(), 111);
+        Ok(())
+    }
+}

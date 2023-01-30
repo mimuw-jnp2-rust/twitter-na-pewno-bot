@@ -18,3 +18,23 @@ pub fn get_api_user_context() -> TwitterApi<Oauth1aToken> {
         var("ACCESS_SECRET").expect("ACCESS_SECRET not found"),
     ))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use twitter_v2::Result;
+
+    #[tokio::test]
+    async fn test_get_api_app_context() -> Result<()> {
+        dotenv::dotenv().expect(".env file should be readable");
+        assert!(get_api_app_context().with_user_ctx().await.is_err());
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_get_api_user_context() -> Result<()> {
+        dotenv::dotenv().expect(".env file should be readable");
+        assert!(get_api_user_context().with_user_ctx().await.is_ok());
+        Ok(())
+    }
+}
