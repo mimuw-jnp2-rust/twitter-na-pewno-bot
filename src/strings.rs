@@ -87,7 +87,7 @@ pub fn print_start_message() {
         + &OffsetDateTime::now_utc()
             .format(&format)
             .expect("invalid date")
-        + "] Starting the job...";
+        + "] Running the bot...";
 
     println!("\x1b[1m\x1b[32m{}\x1b[0m", msg);
 }
@@ -131,9 +131,9 @@ pub fn print_end_message() {
         + &OffsetDateTime::now_utc()
             .format(&format)
             .expect("invalid date")
-        + "] The job is over.";
+        + "] Finished.";
 
-    println!("\x1b[1m\x1b[31m{}\x1b[0m", msg);
+    println!("\x1b[1m\x1b[32m{}\x1b[0m", msg);
 }
 
 #[cfg(test)]
