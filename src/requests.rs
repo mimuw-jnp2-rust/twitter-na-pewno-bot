@@ -113,8 +113,8 @@ pub async fn get_tweets_with_mistake(id: NumericId) -> Vec<Tweet> {
     let tweets = api
         .get_tweets_search_recent(MISTAKE)
         .tweet_fields([AuthorId, CreatedAt])
-        .since_id(id)
         .exclude([Retweets])
+        .since_id(id)
         .max_results(MAXIMUM_NUMBER_OF_RESULTS)
         .send()
         .await
@@ -142,9 +142,9 @@ pub async fn count_tweets_with_mistake(date: &Date) -> usize {
         let tweets = api
             .get_tweets_search_recent(MISTAKE)
             .tweet_fields([AuthorId, CreatedAt])
+            .exclude([Retweets])
             .start_time(date.midnight().assume_utc())
             .end_time(end_date)
-            .exclude([Retweets])
             .max_results(MAXIMUM_NUMBER_OF_RESULTS)
             .send()
             .await
