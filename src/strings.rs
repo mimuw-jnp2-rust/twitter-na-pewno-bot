@@ -11,7 +11,7 @@ const PHRASE_WORDS: [&str; 2] = ["frazę", "wyrażenie"];
 const SPELLING_WORDS: [&str; 2] = ["piszemy", "pisze się"];
 const DIVISION_WORDS: [&str; 3] = ["osobno", "rozdzielnie", "rozłącznie"];
 
-const DATE_FORMAT: &str = "[year]-[month]-[day] [hour]:[minute]:[second]";
+const DATE_FORMAT: &str = "[hour]:[minute]:[second]";
 
 // Generates reply for tweet containing 'napewno'.
 pub fn generate_reply(username: &str) -> String {
@@ -99,7 +99,7 @@ pub fn print_update_message(username: String) {
         + &OffsetDateTime::now_utc()
             .format(&format)
             .expect("invalid date")
-        + "] Posted a profile update with the latest statistics - "
+        + "] Posted a profile update: "
         + "https://twitter.com/"
         + &username
         + ".";
@@ -114,7 +114,7 @@ pub fn print_reply_message(post_id: NumericId, username: String) {
         + &OffsetDateTime::now_utc()
             .format(&format)
             .expect("invalid date")
-        + "] Posted a reply to the following Tweet: "
+        + "] Posted a reply: "
         + "https://twitter.com/"
         + &username
         + "/status/"
