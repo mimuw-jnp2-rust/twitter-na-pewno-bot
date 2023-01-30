@@ -4,7 +4,7 @@ use std::collections::HashSet;
 use std::ops::Sub;
 use time::Date;
 use twitter_v2::id::NumericId;
-use twitter_v2::query::Exclude::{Replies};
+use twitter_v2::query::Exclude::Replies;
 use twitter_v2::query::TweetField::{AuthorId, CreatedAt};
 use twitter_v2::Tweet;
 
