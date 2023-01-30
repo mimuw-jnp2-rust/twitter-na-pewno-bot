@@ -82,13 +82,12 @@ pub fn extract_statistics(text: &str) -> Option<usize> {
 
 // Prints start message.
 pub fn print_start_message() {
-    let format = format_description::parse(DATE_FORMAT).expect("wrong format");
+    let format = format_description::parse(DATE_FORMAT).expect("invalid date");
 
     let msg = "[".to_string()
         + &OffsetDateTime::now_utc()
             .format(&format)
-            .unwrap()
-            .to_string()
+            .expect("invalid date")
         + "] Starting the job...";
 
     println!("\x1b[1m\x1b[32m{}\x1b[0m", msg);
@@ -96,13 +95,12 @@ pub fn print_start_message() {
 
 // Prints message after updating statistics on the profile.
 pub fn print_update_message(username: String) {
-    let format = format_description::parse(DATE_FORMAT).expect("wrong format");
+    let format = format_description::parse(DATE_FORMAT).expect("invalid date");
 
     let msg = "[".to_string()
         + &OffsetDateTime::now_utc()
             .format(&format)
-            .unwrap()
-            .to_string()
+            .expect("invalid date")
         + "] Posted a profile update with the latest statistics - "
         + "https://twitter.com/"
         + &username
@@ -113,13 +111,12 @@ pub fn print_update_message(username: String) {
 
 // Prints message after replying to certain user.
 pub fn print_reply_message(post_id: NumericId, username: String) {
-    let format = format_description::parse(DATE_FORMAT).expect("wrong format");
+    let format = format_description::parse(DATE_FORMAT).expect("invalid date");
 
     let msg = "[".to_string()
         + &OffsetDateTime::now_utc()
             .format(&format)
-            .unwrap()
-            .to_string()
+            .expect("invalid date")
         + "] Posted a reply to the following Tweet: "
         + "https://twitter.com/"
         + &username
@@ -132,13 +129,12 @@ pub fn print_reply_message(post_id: NumericId, username: String) {
 
 // Prints end message.
 pub fn print_end_message() {
-    let format = format_description::parse(DATE_FORMAT).expect("wrong format");
+    let format = format_description::parse(DATE_FORMAT).expect("invalid date");
 
     let msg = "[".to_string()
         + &OffsetDateTime::now_utc()
             .format(&format)
-            .unwrap()
-            .to_string()
+            .expect("invalid date")
         + "] The job is over.";
 
     println!("\x1b[1m\x1b[31m{}\x1b[0m", msg);
