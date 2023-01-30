@@ -83,7 +83,6 @@ pub fn extract_statistics(text: &str) -> Option<usize> {
 // Prints start message.
 pub fn print_start_message() {
     let format = format_description::parse(DATE_FORMAT).expect("invalid date");
-
     let msg = "[".to_string()
         + &OffsetDateTime::now_utc()
             .format(&format)
@@ -96,7 +95,6 @@ pub fn print_start_message() {
 // Prints message after updating statistics on the profile.
 pub fn print_update_message(username: String) {
     let format = format_description::parse(DATE_FORMAT).expect("invalid date");
-
     let msg = "[".to_string()
         + &OffsetDateTime::now_utc()
             .format(&format)
@@ -112,7 +110,6 @@ pub fn print_update_message(username: String) {
 // Prints message after replying to certain user.
 pub fn print_reply_message(post_id: NumericId, username: String) {
     let format = format_description::parse(DATE_FORMAT).expect("invalid date");
-
     let msg = "[".to_string()
         + &OffsetDateTime::now_utc()
             .format(&format)
@@ -130,7 +127,6 @@ pub fn print_reply_message(post_id: NumericId, username: String) {
 // Prints end message.
 pub fn print_end_message() {
     let format = format_description::parse(DATE_FORMAT).expect("invalid date");
-
     let msg = "[".to_string()
         + &OffsetDateTime::now_utc()
             .format(&format)
