@@ -1,6 +1,6 @@
 use rand::Rng;
 use std::string::ToString;
-use time::OffsetDateTime;
+use time::{format_description, OffsetDateTime};
 use twitter_v2::id::NumericId;
 
 const GREETINGS: [&str; 5] = ["Cześć", "Czołem", "Hej", "Serwus", "Witaj"];
@@ -10,6 +10,8 @@ const BRAVERY_WORDS: [&str; 3] = ["brawurę", "śmiałość", "zuchwałość"];
 const PHRASE_WORDS: [&str; 2] = ["frazę", "wyrażenie"];
 const SPELLING_WORDS: [&str; 2] = ["piszemy", "pisze się"];
 const DIVISION_WORDS: [&str; 3] = ["osobno", "rozdzielnie", "rozłącznie"];
+
+const DATE_FORMAT: &str = "[year]-[month]-[day] [hour]:[minute]:[second]";
 
 // Generates reply for tweet containing 'napewno'.
 pub fn generate_reply(username: &str) -> String {
@@ -80,15 +82,27 @@ pub fn extract_statistics(text: &str) -> Option<usize> {
 
 // Prints start message.
 pub fn print_start_message() {
-    let msg = "[".to_string() + &OffsetDateTime::now_utc().to_string() + "] Starting a job...";
+    let format = format_description::parse(DATE_FORMAT).expect("wrong format");
+
+    let msg = "[".to_string()
+        + &OffsetDateTime::now_utc()
+            .format(&format)
+            .unwrap()
+            .to_string()
+        + "] Starting the job...";
 
     println!("\x1b[1m\x1b[32m{}\x1b[0m", msg);
 }
 
 // Prints message after updating statistics on the profile.
 pub fn print_update_message(username: String) {
+    let format = format_description::parse(DATE_FORMAT).expect("wrong format");
+
     let msg = "[".to_string()
-        + &OffsetDateTime::now_utc().to_string()
+        + &OffsetDateTime::now_utc()
+            .format(&format)
+            .unwrap()
+            .to_string()
         + "] Posted a profile update with the latest statistics - "
         + "https://twitter.com/"
         + &username
@@ -99,8 +113,13 @@ pub fn print_update_message(username: String) {
 
 // Prints message after replying to certain user.
 pub fn print_reply_message(post_id: NumericId, username: String) {
+    let format = format_description::parse(DATE_FORMAT).expect("wrong format");
+
     let msg = "[".to_string()
-        + &OffsetDateTime::now_utc().to_string()
+        + &OffsetDateTime::now_utc()
+            .format(&format)
+            .unwrap()
+            .to_string()
         + "] Posted a reply to the following Tweet: "
         + "https://twitter.com/"
         + &username
@@ -113,7 +132,14 @@ pub fn print_reply_message(post_id: NumericId, username: String) {
 
 // Prints end message.
 pub fn print_end_message() {
-    let msg = "[".to_string() + &OffsetDateTime::now_utc().to_string() + "] The job is over.";
+    let format = format_description::parse(DATE_FORMAT).expect("wrong format");
+
+    let msg = "[".to_string()
+        + &OffsetDateTime::now_utc()
+            .format(&format)
+            .unwrap()
+            .to_string()
+        + "] The job is over.";
 
     println!("\x1b[1m\x1b[31m{}\x1b[0m", msg);
 }
