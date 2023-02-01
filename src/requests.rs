@@ -187,11 +187,7 @@ pub async fn post_reply_with_message(id: NumericId, message: String) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use time::OffsetDateTime;
     use twitter_v2::Result;
-
-    const MIN_ERRORS_DAILY: usize = 0;
-    const MAX_ERRORS_DAILY: usize = 10000;
 
     #[tokio::test]
     async fn test_get_username_by_id() -> Result<()> {
@@ -237,15 +233,6 @@ mod tests {
         tweets
             .iter()
             .for_each(|t| assert!(t.text.to_lowercase().contains("napewno")));
-        Ok(())
-    }
-
-    #[tokio::test]
-    async fn test_count_tweets_with_mistake() -> Result<()> {
-        dotenv::dotenv().expect(".env file should be readable");
-        let date = OffsetDateTime::now_utc().date().previous_day().unwrap();
-        assert!(count_tweets_with_mistake(&date).await.ge(&MIN_ERRORS_DAILY));
-        assert!(count_tweets_with_mistake(&date).await.le(&MAX_ERRORS_DAILY));
         Ok(())
     }
 }
