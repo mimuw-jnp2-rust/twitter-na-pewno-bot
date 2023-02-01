@@ -243,7 +243,7 @@ mod tests {
     #[tokio::test]
     async fn test_count_tweets_with_mistake() -> Result<()> {
         dotenv::dotenv().expect(".env file should be readable");
-        let date = OffsetDateTime::now_utc().date();
+        let date = OffsetDateTime::now_utc().date().previous_day().unwrap();
         assert!(count_tweets_with_mistake(&date).await.ge(&MIN_ERRORS_DAILY));
         assert!(count_tweets_with_mistake(&date).await.le(&MAX_ERRORS_DAILY));
         Ok(())
