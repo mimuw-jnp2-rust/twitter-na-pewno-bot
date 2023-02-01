@@ -147,14 +147,16 @@ mod tests {
 
     #[tokio::test]
     async fn test_generate_reply() -> Result<()> {
-        assert!(generate_reply("").len() + LONGEST_USERNAME <= CHARACTERS_LIMIT);
+        let limit = CHARACTERS_LIMIT - LONGEST_USERNAME;
+        assert!(generate_reply("").len().le(&limit));
         Ok(())
     }
 
     #[tokio::test]
     async fn test_generate_tweet() -> Result<()> {
         let longest = MAX_ERRORS_DAILY;
-        assert!(generate_tweet(longest, longest).len() <= CHARACTERS_LIMIT);
+        let limit = CHARACTERS_LIMIT;
+        assert!(generate_tweet(longest, longest).len().le(&limit));
         Ok(())
     }
 

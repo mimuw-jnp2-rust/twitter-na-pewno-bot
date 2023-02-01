@@ -62,7 +62,7 @@ async fn main() {
     let initial_tweet_id = get_initial_tweet(my_id).await;
     let tweets_with_mistake = get_tweets_with_mistake(initial_tweet_id).await;
 
-    // Can not use iterator here, because of instability of async closures.
+    // Can not use iterator here because of instability of async closures.
     for tweet in tweets_with_mistake {
         let id = tweet.author_id.expect("invalid user");
         let username = get_username_by_id(id).await.expect("invalid user");

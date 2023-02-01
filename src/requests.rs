@@ -8,9 +8,9 @@ use twitter_v2::query::Exclude::Replies;
 use twitter_v2::query::TweetField::{AuthorId, CreatedAt};
 use twitter_v2::Tweet;
 
-const MINIMUM_BREAK_AFTER_RUN: f32 = 100.0;
 const MINIMUM_NUMBER_OF_RESULTS: usize = 5;
 const MAXIMUM_NUMBER_OF_RESULTS: usize = 100;
+const MINIMUM_BREAK_AFTER_RUN: f32 = 100.0;
 const MISTAKE: &str = "napewno -is:retweet";
 
 // Gets id of currently authorized user.
@@ -182,4 +182,70 @@ pub async fn post_reply_with_message(id: NumericId, message: String) {
         .send()
         .await
         .expect("invalid message");
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use time::OffsetDateTime;
+    use twitter_v2::Result;
+
+    const MIN_ERRORS_DAILY: usize = 0;
+    const MAX_ERRORS_DAILY: usize = 10000;
+
+    #[tokio::test]
+    async fn test_get_username_by_id() -> Result<()> {
+        dotenv::dotenv().expect(".env file should be readable");
+        let id = NumericId::new(1608833104919117824);
+        let username = "napewnobot".to_string();
+        assert_eq!(get_username_by_id(id).await.unwrap(), username);
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_get_name_by_id() -> Result<()> {
+        dotenv::dotenv().expect(".env file should be readable");
+        let id = NumericId::new(1608833104919117824);
+        let name = "na pewno bot 📢".to_string();
+        assert_eq!(get_name_by_id(id).await.unwrap(), name);
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_get_initial_tweet() -> Result<()> {
+        dotenv::dotenv().expect(".env file should be readable");
+        let user_id = NumericId::new(841324337978306562);
+        let tweet_id = NumericId::new(1620564152187232256);
+        assert_eq!(get_initial_tweet(user_id).await, tweet_id);
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_get_latest_tweet() -> Result<()> {
+        dotenv::dotenv().expect(".env file should be readable");
+        let user_id = NumericId::new(841324337978306562);
+        let tweet_id = NumericId::new(1355831924690923520);
+        assert_eq!(get_latest_tweet(user_id).await.unwrap().id, tweet_id);
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_get_tweets_with_mistake() -> Result<()> {
+        dotenv::dotenv().expect(".env file should be readable");
+        let tweet_id = NumericId::new(1619713517258522625);
+        let tweets = get_tweets_with_mistake(tweet_id).await;
+        tweets
+            .iter()
+            .for_each(|t| assert!(t.text.to_lowercase().contains("napewno")));
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_count_tweets_with_mistake() -> Result<()> {
+        dotenv::dotenv().expect(".env file should be readable");
+        let date = OffsetDateTime::now_utc().date();
+        assert!(count_tweets_with_mistake(&date).await.ge(&MIN_ERRORS_DAILY));
+        assert!(count_tweets_with_mistake(&date).await.le(&MAX_ERRORS_DAILY));
+        Ok(())
+    }
 }
