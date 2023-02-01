@@ -68,7 +68,7 @@ pub async fn get_name_by_id(id: NumericId) -> Option<String> {
 // Gets the id of the latest tweet, after which user stopped searching.
 pub async fn get_initial_tweet(user: NumericId) -> NumericId {
     let api = get_api_app_context();
-    let my_tweets = api
+    let tweets = api
         .get_user_tweets(user)
         .tweet_fields([CreatedAt])
         .max_results(MAXIMUM_NUMBER_OF_RESULTS)
@@ -78,21 +78,21 @@ pub async fn get_initial_tweet(user: NumericId) -> NumericId {
         .into_data()
         .unwrap_or_default();
 
-    let index = (0..my_tweets.len() - 1)
+    let index = (0..tweets.len() - 1)
         .find(|&i| {
-            let cur_date = my_tweets[i].created_at.expect("invalid date");
-            let next_date = my_tweets[i + 1].created_at.expect("invalid date");
+            let cur_date = tweets[i].created_at.expect("invalid date");
+            let next_date = tweets[i + 1].created_at.expect("invalid date");
             cur_date.sub(next_date).as_seconds_f32() > MINIMUM_BREAK_AFTER_RUN
         })
-        .unwrap_or(my_tweets.len() - 1);
+        .unwrap_or(tweets.len() - 1);
 
-    my_tweets[index].id
+    tweets[index].id
 }
 
 // Gets the latest tweet of given user.
 pub async fn get_latest_tweet(user: NumericId) -> Option<Tweet> {
     let api = get_api_app_context();
-    let my_tweets = api
+    let tweets = api
         .get_user_tweets(user)
         .tweet_fields([CreatedAt])
         .exclude([Replies])
@@ -103,7 +103,7 @@ pub async fn get_latest_tweet(user: NumericId) -> Option<Tweet> {
         .into_data()
         .unwrap_or_default();
 
-    my_tweets.first().cloned()
+    tweets.first().cloned()
 }
 
 // Gets tweets with mistake since given tweet.

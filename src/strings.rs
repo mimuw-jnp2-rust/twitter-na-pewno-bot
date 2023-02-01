@@ -71,13 +71,13 @@ pub fn generate_tweet(prev_stat: usize, cur_stat: usize) -> String {
 
 // Extracts statistics (first integer) from text.
 pub fn extract_statistics(text: &str) -> Option<usize> {
-    let size = text
+    let stats = text
         .split_whitespace()
         .map(|s| s.parse::<usize>())
         .find(|s| s.is_ok())
         .expect("invalid string");
 
-    size.ok()
+    stats.ok()
 }
 
 // Prints start message.
