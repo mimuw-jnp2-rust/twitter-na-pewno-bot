@@ -176,12 +176,17 @@ pub async fn post_tweet_with_message(message: String) {
 // Posts reply to provided tweet with given message.
 pub async fn post_reply_with_message(id: NumericId, message: String) {
     let api = get_api_user_context();
-    api.post_tweet()
+    let result = api.post_tweet()
         .text(message)
         .in_reply_to_tweet_id(id)
         .send()
-        .await
-        .expect("invalid message");
+        .await;
+
+    // There are several reasons why replying to certain tweets is just
+    // impossible - ignore such cases and do not stop program.
+    if result.is_ok() {
+        result.unwrap();
+    }
 }
 
 #[cfg(test)]
