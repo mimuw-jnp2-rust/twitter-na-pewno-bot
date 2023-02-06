@@ -176,7 +176,8 @@ pub async fn post_tweet_with_message(message: String) {
 // Posts reply to provided tweet with given message.
 pub async fn post_reply_with_message(id: NumericId, message: String) {
     let api = get_api_user_context();
-    let result = api.post_tweet()
+    let result = api
+        .post_tweet()
         .text(message)
         .in_reply_to_tweet_id(id)
         .send()
